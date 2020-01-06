@@ -1,0 +1,1 @@
+1. Dodano funkcjê w³¹czania urz¹dzenia po rêcznym obrocie bêbna i uzyskaniu prêdkoœci min 3 obr/min
