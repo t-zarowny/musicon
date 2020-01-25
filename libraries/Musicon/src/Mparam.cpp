@@ -74,12 +74,12 @@ Mparam::Mparam(){
                                 // 65 - różnica odczytu potencjometru akutalnego i ostatniego 
                                 // 66 - dolny wyłącznik krańcowy naciśnięty - zbocze narastające 
 
-        init(70, 100);          // 70 - Wartość prądu przy naładowaniu baterii 100% [mA]
+        init(70, 150);          // 70 - Wartość prądu przy naładowaniu baterii 100% [mA]
         init(71, 127);          // 71 - Napięcie minimalne baterii [V x10]
         init(72, 164);          // 72 - Napięcie maksymalne baterii [V x10]
         init(73, 5);            // 73 - Spadek napięcia przy wyłączonym zasilaniu [V x10]
         init(74, 10);           // 74 - Spadek napięcia przy wyłączonym zasilaniu i włączonym napędzie [V x10]
-        init(75, -15);          // 75 - wartość prądu poniżej której uznane jest zasilanie z baterii a wyżej z zasilacza [mA]
+        init(75, -30);          // 75 - wartość prądu poniżej której uznane jest zasilanie z baterii a wyżej z zasilacza [mA]
         init(76, 900);          // 76 - prędkość RPM, powyżej której należy hamować
         init(77, 1);            // 77 - czas hamowania
         init(78, 4);            // 78 - czas do zatrzymania podczas maksymalnego obciążenia

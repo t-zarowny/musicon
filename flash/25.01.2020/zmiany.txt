@@ -1,0 +1,2 @@
+1. Dodanie automatycznej kalibracji czujnika pr¹du baterii
+2. Priorytet zasilania sieciowego
