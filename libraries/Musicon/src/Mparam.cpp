@@ -79,7 +79,7 @@ Mparam::Mparam(){
         init(72, 164);          // 72 - Napięcie maksymalne baterii [V x10]
         init(73, 5);            // 73 - Spadek napięcia przy wyłączonym zasilaniu [V x10]
         init(74, 10);           // 74 - Spadek napięcia przy wyłączonym zasilaniu i włączonym napędzie [V x10]
-        init(75, -30);          // 75 - wartość prądu poniżej której uznane jest zasilanie z baterii a wyżej z zasilacza [mA]
+        init(75, -40);          // 75 - wartość prądu poniżej której uznane jest zasilanie z baterii a wyżej z zasilacza [mA]
         init(76, 900);          // 76 - prędkość RPM, powyżej której należy hamować
         init(77, 1);            // 77 - czas hamowania
         init(78, 4);            // 78 - czas do zatrzymania podczas maksymalnego obciążenia

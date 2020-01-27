@@ -173,23 +173,43 @@ void lcd_control(){
   }
 }
 void timers(){
-  if(t0<2000 || Musicon.parametry->get(52) != 3){
+  if(t0<1000 || Musicon.parametry->get(52) != 3){
     Musicon.ctrl->setStopMove();
-
-    
   }
-    if(t9 == 0 && t0 > 3000 && t0 < 3100){
+    if(t9 == 0 && t0 > 1000 && t0 < 1100){
       Musicon.parametry->set(55, 0);  
       t9=t0;
   }
-    if(t10 == 0 && t0 > 8000 && t0 < 8100){
-      int napiecie_czujnika = Musicon.parametry->get(54);
-      if(napiecie_czujnika > 2200){
-          Musicon.parametry->set(19, Musicon.parametry->get(54));  
-          Musicon.parametry->set(55, Musicon.parametry->get(22));        
-          t10=t0;        
+    if(t10 == 0 && t0 > 1500 && t0 < 1700){
+      int cv = 0;
+      for(int i=0; i<40; i++){
+        cv += analogRead(CSENS_pin);
+        delay(5);
       }
+      cv /= 40;
+      napiecie_czujnika_smoth_init = cv * (1.1/1023.0) * 3200;
+      en_brake = true; 
+      t10=t0;    
   }  
+    if(t11 == 0 && t0 > 2000 && t0 < 2100){
+      int cv = 0;
+      for(int i=0; i<40; i++){
+        cv += analogRead(CSENS_pin);
+        delay(5);
+      }
+      cv /= 40;
+      int cv_temp = cv * (1.1/1023.0) * 3200;
+      en_brake = false; 
+            
+
+      if(napiecie_czujnika_smoth_init - cv_temp < 20){
+        Musicon.parametry->set(19, napiecie_czujnika_smoth_init-10);         
+      }else{
+        Musicon.parametry->set(19, napiecie_czujnika_smoth_init+12);             
+      }
+        Musicon.parametry->set(55, Musicon.parametry->get(22));        
+        t11=t0;    
+  }
 /*
   if(t0-t9 > 1){
        //OdczytajNapiecieCzujnikaPradu();
@@ -304,7 +324,7 @@ void power_manager(){
      }  
 }
 void battery_charging(){
-  if(Musicon.parametry->get(44) < Musicon.parametry->get(75) && t0 > 10000){
+  if(Musicon.parametry->get(44) < Musicon.parametry->get(75) && t0 > 10000 && Musicon.parametry->get(45) > 90){
         Musicon.parametry->set(56, 1);
         Musicon.parametry->set(55, Musicon.parametry->get(22));
         Musicon.parametry->set(57, 0);

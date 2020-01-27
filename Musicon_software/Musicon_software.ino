@@ -27,7 +27,7 @@ char wersja [] = "v3.0.1";
 Musicon Musicon(btn_pin, analogPot_pin);
 
 bool hall_mem = false;
-unsigned long t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10 = 0;
+unsigned long t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11 = 0;
 bool first_loop = true;
 bool power_dn_permit = false;
 int csens_mem1,csens_mem2 = 0;
@@ -50,7 +50,7 @@ int licz_max_obc = 0;
 int temp_czujnik_pradu_v = 0;
 int licznik = 0;
 unsigned long suma = 0;
-int interwal, ostatni_oczyt = 0;
+int interwal, ostatni_oczyt, napiecie_czujnika_pradu_init, napiecie_czujnika_smoth_init = 0;
 
 //int analogPinPot = 2;
 
@@ -113,6 +113,7 @@ void setup() {
   
   configTMC5160();
   Musicon.parametry->set(45, 140);  
+  Musicon.parametry->set(56, 2);
 }
 void loop() {
   if(first_loop){
