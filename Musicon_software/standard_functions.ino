@@ -79,6 +79,13 @@ void lcd_control(){
           lcd.print("       ");    
           counter1++;
           if(counter1 > 5){
+            /*
+                if(Musicon.parametry->get(53) > 80) counter1=4;
+                if(Musicon.parametry->get(53) < 80 && Musicon.parametry->get(53) >= 60) counter1=3;
+                if(Musicon.parametry->get(53) < 60 && Musicon.parametry->get(53) >= 45) counter1=2;
+                if(Musicon.parametry->get(53) < 45 && Musicon.parametry->get(53) >= 35) counter1=1;
+                if(Musicon.parametry->get(53) < 35) counter1=0;
+            */
                 if(Musicon.parametry->get(53) > 80) counter1=4;
                 if(Musicon.parametry->get(53) < 80 && Musicon.parametry->get(53) >= 60) counter1=3;
                 if(Musicon.parametry->get(53) < 60 && Musicon.parametry->get(53) >= 45) counter1=2;
