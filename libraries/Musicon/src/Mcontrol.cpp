@@ -49,17 +49,24 @@ void Mcontrol::calcVbatt(){
         parametry->set(45, v_out);
 }
 void Mcontrol::addVbat(int adc){
-       vbat->add(adc); 
+       vbat->add(adc);
 }
 void Mcontrol::addCsens(int adc){
        parametry->set(43, adc);
+       int cv = adc - 511;
+       cv = cv * (1100/1024) * 2;
+       vcsens->add(cv); 
+       long ca = cv / 0.33;
+       csens->add(ca);
+       /*
        //int cv = adc * (2.58/1023.0) * 2000;
        int cv = adc * (1.1/1023.0) * 3200;
-       vcsens->add(cv); 
+       vcsens->add(cv);  
        long ca = vcsens->getVal() - parametry->get(19);
        ca *= 1000;
        ca /= 185;
        csens->add(ca);
+       */
 }
 void Mcontrol::addMenuSW(int adc){
         int minus_d = parametry->get(12) - parametry->get(15);
@@ -113,7 +120,7 @@ int Mcontrol::calcPotVal(){
                 pot_sum = 0;
                 int roznica_pot = odczyt_akt - parametry->get(25);
                 parametry->set(65, roznica_pot);
-                if(abs(roznica_pot) < 5){
+                if(abs(roznica_pot) < 10){
                         odczyt_akt = pot_akt_val;     
                 }
 
@@ -121,10 +128,10 @@ int Mcontrol::calcPotVal(){
                 readings_pot[readIndex_pot] = odczyt_akt;
                 total_pot = total_pot + readings_pot[readIndex_pot];
                 readIndex_pot = readIndex_pot + 1;
-                if (readIndex_pot >= 8) {
+                if (readIndex_pot >= 16) {
                         readIndex_pot = 0;
                 }
-                return (int)total_pot / (int)8;             
+                return (int)total_pot / (int)16;             
         }else{
           return -99;      
         }

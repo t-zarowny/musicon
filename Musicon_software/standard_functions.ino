@@ -176,6 +176,7 @@ void timers(){
   if(t0<1000 || Musicon.parametry->get(52) != 3){
     Musicon.ctrl->setStopMove();
   }
+
     if(t9 == 0 && t0 > 1000 && t0 < 1100){
       Musicon.parametry->set(55, 0);  
       t9=t0;
@@ -210,6 +211,7 @@ void timers(){
         Musicon.parametry->set(55, Musicon.parametry->get(22));        
         t11=t0;    
   }
+
 /*
   if(t0-t9 > 1){
        //OdczytajNapiecieCzujnikaPradu();
@@ -231,6 +233,7 @@ void timers(){
        t10=t0;
   }
 */
+
    if(t0-t7 > 1000){
        bit1000ms = !bit1000ms; 
 
@@ -251,6 +254,8 @@ void timers(){
        }
        t7 = t0;
    }  
+   if(Musicon.parametry->get(52) == 3){ digitalWrite(PLED_pin, 1); } else { digitalWrite(PLED_pin, 0); }
+   if(Musicon.parametry->get(52) == 1){ digitalWrite(PLED_pin, bit1000ms); } 
    if(Musicon.parametry->get(59) == 0 && Musicon.parametry->get(18) != 0 && Musicon.parametry->get(52) == 3){
        unsigned long temp = (unsigned long) Musicon.parametry->get(18)*1000UL;
        if(t0-t8 > temp){
@@ -314,7 +319,7 @@ void power_manager(){
      if(Musicon.parametry->get(52) == 1 && Musicon.parametry->get(57) == 3){
       Musicon.parametry->set(52, 2);
      }
-     if((Musicon.parametry->get(52) == 0 || Musicon.parametry->get(52) == 1) && (digitalRead(power_sw_pin) == HIGH || Musicon.parametry->get(41) > 500)){
+     if((Musicon.parametry->get(52) == 0 || Musicon.parametry->get(52) == 1) && (digitalRead(power_sw_pin) == HIGH || Musicon.parametry->get(41) > 250)){
       Musicon.parametry->set(52, 3);
       digitalWrite(power_pin, HIGH);
       power_dn_permit = false;

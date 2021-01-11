@@ -20,9 +20,15 @@ LiquidCrystal_I2C lcd1(0x3F, 16, 2);
 #define CLOCKOUT_pin 9        //16mhz
 #define enable_pin 8          //DRV_ENABLE
 #define bat_charge_pin 3       
+#define PLED_pin A1 
 
 char nazwa [] = "Musicon"; 
-char wersja [] = "v3.0.1"; 
+char wersja [] = "v3.0.3"; 
+
+/* Hardware do zmiany:
+ *  POT_OUT -> dodać kondensator
+ * 
+ */
 
 Musicon Musicon(btn_pin, analogPot_pin);
 
@@ -135,6 +141,7 @@ void loop() {
     Musicon.parametry->set(34, 1);
     first_loop = false;
   }
+
      t0 = millis();
      Musicon.ctrl->upd();
     // mediana.in(analogRead(CSENS_pin));

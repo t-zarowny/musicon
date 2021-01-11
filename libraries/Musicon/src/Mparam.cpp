@@ -10,7 +10,7 @@ Mparam::Mparam(){
         //setNazwa("Musicon");
         init(0, 0);             // 0 - dolna wartosc potencjometru
         init(1, 0);             // 1 - gorna wartosc potencjometru
-        init(2, 260);           // 2 - wartosc potencjometru dzielaca wylaczniki krancowe
+        init(2, 130);           // 2 - wartosc potencjometru dzielaca wylaczniki krancowe
         init(3, 60);            // 3 - przełożenie bęben-silnik 1:x (x10)
         init(4, 32);            // 4 - ilość wierszy przycisków na obwodzie bębna
         init(5, 10);            // 5 - minimalne obroty bębna (x10)
