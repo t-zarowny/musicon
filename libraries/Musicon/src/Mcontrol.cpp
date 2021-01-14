@@ -114,15 +114,15 @@ int Mcontrol::calcPotVal(){
         int odczyt_akt = analogRead(pot_pin);
         pot_sum = pot_sum + odczyt_akt;
         pot_sum_licz++;
-        if(pot_sum_licz >= 5){
+        if(pot_sum_licz == 4){
                 pot_sum_licz = 0;     
-                odczyt_akt = pot_sum/5;
+                odczyt_akt = pot_sum/4;
                 pot_sum = 0;
                 int roznica_pot = odczyt_akt - parametry->get(25);
                 parametry->set(65, roznica_pot);
-                if(abs(roznica_pot) < 10){
+                //if(abs(roznica_pot) < 10){
                         odczyt_akt = pot_akt_val;     
-                }
+                //}
 
                 total_pot = total_pot - readings_pot[readIndex_pot];
                 readings_pot[readIndex_pot] = odczyt_akt;
