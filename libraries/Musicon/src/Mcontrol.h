@@ -13,9 +13,9 @@ class Mcontrol
         int pot_akt_val=0;
         int pot_sum = 0;
         int pot_sum_licz = 0;
-        int readings_pot[8];   
+        int readings_pot[16] = { 0 };   
         int readIndex_pot = 0;              
-        int total_pot = 0;         
+        long total_pot = 0;         
         int readings_curr[32];   
         int readIndex_curr = 0;              
         long total_curr = 0;               

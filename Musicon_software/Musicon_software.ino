@@ -287,7 +287,7 @@ void configTMC5160(void)
   sendData_40bit(0x95, 0x00000190, CSN_pin);// THIGH=2000-7D0 (THIGH=300-12C)
   
   sendData_40bit(0xA3, 0x00000001, CSN_pin);// VSTART = 1
-  sendData_40bit(0xA4, 0x0000000A, CSN_pin);// A1 = 5 000 First acceleration
+  sendData_40bit(0xA4, 0x000007D0, CSN_pin);// A1 = 5 000 First acceleration
   sendData_40bit(0xA5, 0x0000000A, CSN_pin);// V1 = 26843 Acceleration threshold velocity V1
   sendData_40bit(0xA6, 0x00000E38, CSN_pin);// AMAX = 5000 Acceleration above V1
   sendData_40bit(0xA7, 0x0000000A, CSN_pin);// VMAX = ....

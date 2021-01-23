@@ -114,28 +114,62 @@ int Mcontrol::calcPotVal(){
         int odczyt_akt = analogRead(pot_pin);
         pot_sum = pot_sum + odczyt_akt;
         pot_sum_licz++;
-        if(pot_sum_licz == 4){
-                pot_sum_licz = 0;     
-                odczyt_akt = pot_sum/4;
+        if(pot_sum_licz == 8){
+                odczyt_akt = pot_sum/pot_sum_licz;
+                pot_sum_licz = 0;  
                 pot_sum = 0;
                 int roznica_pot = odczyt_akt - parametry->get(25);
                 parametry->set(65, roznica_pot);
-                //if(abs(roznica_pot) < 10){
+                if(abs(roznica_pot) < 3){
                         odczyt_akt = pot_akt_val;     
-                //}
+                }
+                
+                velocity_promil = map(odczyt_akt, parametry->get(0), parametry->get(1), 0, 1000);
+
+                velocity_promil = constrain(velocity_promil, 0, 1000);
+
+                total_pot = total_pot - readings_pot[readIndex_pot];
+                readings_pot[readIndex_pot] = velocity_promil;
+                total_pot = total_pot + readings_pot[readIndex_pot];
+                readIndex_pot = readIndex_pot + 1;
+                if (readIndex_pot >= 16) {
+                        readIndex_pot = 0; 
+                }
+                velocity_promil = total_pot / 16; 
+                if(parametry->get(37) == 1){
+                        velocity_promil = 1000;       
+                }
+                //return total_pot / 16; 
+                return odczyt_akt;
+        }else{
+          return -99;      
+        }
+        /*
+        pot_sum = pot_sum + odczyt_akt;
+        pot_sum_licz++;
+        if(pot_sum_licz >= 2){
+                   
+                odczyt_akt = pot_sum/pot_sum_licz;
+                pot_sum_licz = 0;  
+                pot_sum = 0;
+                int roznica_pot = odczyt_akt - parametry->get(25);
+                parametry->set(65, roznica_pot);
+                if(abs(roznica_pot) < 5){
+                        odczyt_akt = pot_akt_val;     
+                }
 
                 total_pot = total_pot - readings_pot[readIndex_pot];
                 readings_pot[readIndex_pot] = odczyt_akt;
                 total_pot = total_pot + readings_pot[readIndex_pot];
                 readIndex_pot = readIndex_pot + 1;
-                if (readIndex_pot >= 16) {
-                        readIndex_pot = 0;
+                if (readIndex_pot >= 8) {
+                        readIndex_pot = 0; 
                 }
-                return (int)total_pot / (int)16;             
+                return (int)total_pot / (int)8;             
         }else{
           return -99;      
         }
-
+        */
 
 }
 void Mcontrol::calcCurrVal(){
@@ -218,11 +252,15 @@ int Mcontrol::getPotVal(){
         return pot_akt_val;
 }
 void Mcontrol::setVelocity(){
-        velocity_promil = map(pot_akt_val, parametry->get(0), parametry->get(1), 0, 1000);
+        //velocity_promil = map(pot_akt_val, parametry->get(0), parametry->get(1), 0, 1000);
+        /*
+        velocity_promil = map(pot_akt_val, parametry->get(0), parametry->get(1), 0, 125);
+        velocity_promil = velocity_promil * 8;
         if(parametry->get(37) == 1){
          velocity_promil = 1000;       
         }
         velocity_promil = constrain(velocity_promil, 0, 1000);
+        */
         if(!enable_motor) velocity_promil = 0;
 
                 unsigned int min_tmc = (parametry->get(5) * parametry->get(3))/100;

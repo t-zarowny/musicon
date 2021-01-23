@@ -326,7 +326,7 @@ void power_manager(){
      if(Musicon.parametry->get(52) == 1 && Musicon.parametry->get(57) == 3){
       Musicon.parametry->set(52, 2);
      }
-     if((Musicon.parametry->get(52) == 0 || Musicon.parametry->get(52) == 1) && (digitalRead(power_sw_pin) == HIGH || Musicon.parametry->get(41) > 250)){
+     if((Musicon.parametry->get(52) == 0 || Musicon.parametry->get(52) == 1) && (digitalRead(power_sw_pin) == HIGH || Musicon.parametry->get(41) > 100)){
       Musicon.parametry->set(52, 3);
       digitalWrite(power_pin, HIGH);
       power_dn_permit = false;
