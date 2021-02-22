@@ -44,6 +44,8 @@ class Mcontrol
         Smoothing50 * csens;
         //Smoothing30 * batCurr;
         Smoothing200 * vcsens;
+        float smoothedVal = 0.0;
+        float smoothStrength = 4.0;
         
   
   public:

@@ -240,7 +240,10 @@ void timers(){
        t10=t0;
   }
 */
-
+   if(t0-t5 > 200){
+    bit50ms = !bit50ms;
+    t5 = t0;
+   }
    if(t0-t7 > 1000){
        bit1000ms = !bit1000ms; 
 

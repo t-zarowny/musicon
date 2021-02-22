@@ -22,8 +22,10 @@ void Mcontrol::upd(){
                 lim_sw_stat = limitSwitchUpd();
                 int temp_pot_akt = calcPotVal();
                 if(temp_pot_akt != -99){
-                      pot_akt_val = temp_pot_akt;  
-                }
+                        pot_akt_val = temp_pot_akt;  
+                }      
+
+                
                         
         }else{
                 lim_sw_stat = limitSwitchUpdService();
@@ -114,16 +116,20 @@ int Mcontrol::calcPotVal(){
         int odczyt_akt = analogRead(pot_pin);
         pot_sum = pot_sum + odczyt_akt;
         pot_sum_licz++;
-        if(pot_sum_licz == 8){
+        if(pot_sum_licz == 4){
                 odczyt_akt = pot_sum/pot_sum_licz;
                 pot_sum_licz = 0;  
                 pot_sum = 0;
                 int roznica_pot = odczyt_akt - parametry->get(25);
                 parametry->set(65, roznica_pot);
-                if(abs(roznica_pot) < 3){
+                if(abs(roznica_pot) < 5){
                         odczyt_akt = pot_akt_val;     
                 }
-                
+                // float smoothedVal = 0.0;
+                // float smoothStrength = 5.0;
+                //smoothedVal =  smoothedVal + ((odczyt_akt - smoothedVal) + 0.0) / smoothStrength;
+                //odczyt_akt = round(smoothedVal);
+
                 velocity_promil = map(odczyt_akt, parametry->get(0), parametry->get(1), 0, 1000);
 
                 velocity_promil = constrain(velocity_promil, 0, 1000);

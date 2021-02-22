@@ -1,6 +1,7 @@
 #include <SPI.h>
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
+#include <AS5600.h>
 #include <String.h> 
 #include <Musicon.h>
 
@@ -21,9 +22,10 @@ LiquidCrystal_I2C lcd1(0x3F, 16, 2);
 #define enable_pin 8          //DRV_ENABLE
 #define bat_charge_pin 3       
 #define PLED_pin A1 
+#define SYS_VOL   5
 
 char nazwa [] = "Musicon"; 
-char wersja [] = "v3.0.3"; 
+char wersja [] = "v3.4.1"; 
 
 /* Hardware do zmiany:
  *  POT_OUT -> dodać kondensator
@@ -31,6 +33,7 @@ char wersja [] = "v3.0.3";
  */
 
 Musicon Musicon(btn_pin, analogPot_pin);
+AMS_5600 ams5600;
 
 bool hall_mem = false;
 unsigned long t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11 = 0;
@@ -46,17 +49,29 @@ byte batt_0[] = {0x0E,0x1B,0x11,0x11,0x11,0x11,0x11,0x1F};
 byte batt_null[] = {14,27,17,27,21,27,17,31};
 byte powfont[] = {0x0A,0x0A,0x1F,0x1F,0x1F,0x0E,0x04,0x04};
 bool bit1000ms = true;
+bool bit50ms = true;
+bool bit50ms_mem = true;
 int counter1 = 0;
 int tryb_mem = 0;
 bool batt_full = false;
 bool en_brake = false;
 int t_brake = 0;
 int licz_max_obc = 0;
+int ang, lang = 0;
 
 int temp_czujnik_pradu_v = 0;
 int licznik = 0;
 unsigned long suma = 0;
 int interwal, ostatni_oczyt, napiecie_czujnika_pradu_init, napiecie_czujnika_smoth_init = 0;
+int kierunek_obrotu_bebna = true; // 1 - kąt wzrasta, 0 - stop, -1 - kąt maleje,
+int kat_obrotu_bebna = 0;
+int kat_bebna = 0;
+int kat_bebna_mem = 0;
+int kat_silnika_mem = 0;
+int kat_silnika = 0;
+int licznik_pelnych_obr_silnika = 0;
+unsigned long czas_pomiaru_mem = 0;
+int predkosc_bebna_enkoder = 0;
 
 //int analogPinPot = 2;
 
@@ -265,12 +280,83 @@ void loop() {
   }
 */
 
-timers();
-hall_read();
-
-
+  timers();
+  hall_read();
+/*  
+  if(ams5600.detectMagnet() == 1 ){
+    //Musicon.parametry->set(68, ams5600.getMagnitude());
+    Musicon.parametry->set(68, convertRawAngleToDegrees(ams5600.getRawAngle()));
+  }else{
+    Musicon.parametry->set(68, -1);
+  }
+  bool bit50ms = true;
+  bool bit50ms_mem = true;
+  */
+  if(bit50ms && !bit50ms_mem){ calcMusiconDegree(); }
+  bit50ms_mem = bit50ms;
 }
 
+float convertRawAngleToDegrees(word newAngle)
+{
+  /* Raw data reports 0 - 4095 segments, which is 0.087 of a degree */
+  float retVal = newAngle * 0.87;
+  ang = retVal;
+  return ang;
+}
+
+void calcMusiconDegree(){
+  /*
+    bool kierunek_obrotu_bebna = true; // 1 - kąt wzrasta, 0 - kąt maleje
+    int kat_obrotu_bebna = 0;
+    int kat_silnika_mem = 0;
+    int kat_silnika = 0;
+    int licznik_pelnych_obr_silnika = 0;
+    unsigned long czas_pomiaru_mem = 0;
+  */
+  if(ams5600.detectMagnet() == 1 ){
+    kat_silnika = convertRawAngleToDegrees(ams5600.getRawAngle());
+    int kat_obr_bebna_przy_jednym_obrocie_silnika = 36000 / Musicon.parametry->get(3);
+    kat_obr_bebna_przy_jednym_obrocie_silnika = 900; // tymczasowo, do testów
+    if(kat_silnika < 1000 && kat_silnika_mem > 3000){ 
+      kat_silnika_mem = kat_silnika_mem - 3600;
+      kat_obrotu_bebna = kat_obrotu_bebna + kat_obr_bebna_przy_jednym_obrocie_silnika;
+    }
+    if(kat_silnika > 3000 && kat_silnika_mem < 1000){ 
+      kat_silnika_mem = kat_silnika_mem + 3600; 
+      kat_obrotu_bebna = kat_obrotu_bebna - kat_obr_bebna_przy_jednym_obrocie_silnika;
+    }
+    if(kat_obrotu_bebna > 3600 - kat_obr_bebna_przy_jednym_obrocie_silnika){ 
+      kat_obrotu_bebna = 0; 
+    }
+    if(kat_obrotu_bebna < 0){ 
+      kat_obrotu_bebna = 3600 - kat_obr_bebna_przy_jednym_obrocie_silnika;   
+    }
+    int delta_kat = kat_silnika - kat_silnika_mem;
+    int dalta_czas = t0 - czas_pomiaru_mem;
+    if(delta_kat >= 0){ 
+      if(delta_kat == 0){ kierunek_obrotu_bebna = 0; }else{ kierunek_obrotu_bebna = 1; }
+    }else{ 
+      kierunek_obrotu_bebna = -1; 
+    }
+    
+    kat_bebna = kat_obrotu_bebna + map(kat_silnika, 0, 3600, 0, kat_obr_bebna_przy_jednym_obrocie_silnika);
+
+    predkosc_bebna_enkoder = 50 * delta_kat;
+    dalta_czas = dalta_czas * 3;
+    predkosc_bebna_enkoder = predkosc_bebna_enkoder / dalta_czas;
+   
+    
+    Musicon.parametry->set(67, predkosc_bebna_enkoder);
+    Musicon.parametry->set(68, kat_silnika);
+    Musicon.parametry->set(69, kat_bebna);
+    kat_silnika_mem = kat_silnika;
+    kat_bebna_mem = kat_bebna;
+    czas_pomiaru_mem = t0;
+  }else{
+    Musicon.parametry->set(68, -1);
+  }
+    
+}
 
 void configTMC5160(void)
  {

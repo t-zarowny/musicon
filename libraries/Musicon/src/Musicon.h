@@ -7,16 +7,13 @@
 #include "Mparam.h"
 #include "Mcontrol.h"
 
-class Musicon {
+class Musicon 
+{
         private:
-        
-        
-
         
         public:
             Mcontrol * ctrl;
             Mparam * parametry;
             Musicon(int ls_pin, int pot_pin);
 };
-
 #endif  

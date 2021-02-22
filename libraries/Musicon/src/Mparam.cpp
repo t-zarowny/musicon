@@ -73,6 +73,9 @@ Mparam::Mparam(){
                                 // 64 - liczenie odczytów 0% baterii
                                 // 65 - różnica odczytu potencjometru akutalnego i ostatniego 
                                 // 66 - dolny wyłącznik krańcowy naciśnięty - zbocze narastające 
+                                // 67 - prędkość bębna wraz z kierunkiem
+                                // 68 - odczyt z enkodera magnetycznego - aktualny kąt obrotu silnika (0-360) x 10
+                                // 69 - aktualny kąt obrotu bębna (0-360)
 
         init(70, 150);          // 70 - Wartość prądu przy naładowaniu baterii 100% [mA]
         init(71, 127);          // 71 - Napięcie minimalne baterii [V x10]
