@@ -18,19 +18,16 @@ Mcontrol::Mcontrol (int limit_sw_pin, int potentiometer_pin, Mparam * param){
 }
 void Mcontrol::upd(){
 
-        if(parametry->get(38) == 0){
-                lim_sw_stat = limitSwitchUpd();
-                int temp_pot_akt = calcPotVal();
-                if(temp_pot_akt != -99){
-                        pot_akt_val = temp_pot_akt;  
-                }      
-
-                
-                        
-        }else{
-                lim_sw_stat = limitSwitchUpdService();
-                pot_akt_val = parametry->get(39);
-        }                
+        // if(parametry->get(38) == 0){
+        //         lim_sw_stat = limitSwitchUpd();
+        //         int temp_pot_akt = calcPotVal();
+        //         if(temp_pot_akt != -99){
+        //                 pot_akt_val = temp_pot_akt;  
+        //         }             
+        // }else{
+        //         lim_sw_stat = limitSwitchUpdService();
+        //         pot_akt_val = parametry->get(39);
+        // }                
         
 
         
@@ -58,7 +55,7 @@ void Mcontrol::addCsens(int adc){
        int cv = adc - 511;
        cv = cv * (1100/1024) * 2;
        vcsens->add(cv); 
-       long ca = cv / 0.33;
+       long ca = cv / 0.3;
        csens->add(ca);
        /*
        //int cv = adc * (2.58/1023.0) * 2000;
@@ -112,44 +109,102 @@ void Mcontrol::addMenuSW(int adc){
        parametry->set(46, adc);
 
 }
+
+void Mcontrol::multiplexer (uint8_t ch) {
+  if (ch > 1) return;
+  Wire.beginTransmission(MPLXADR);
+  Wire.write(1 << ch);
+  Wire.endTransmission();
+}
+
+float Mcontrol::convRawAngleToDegrees(word newAngle)
+{
+  /* Raw data reports 0 - 4095 segments, which is 0.087 of a degree */
+  float retVal = newAngle * 0.87;
+  ang1 = retVal;
+  return ang1;
+}
+int Mcontrol::setPotVal(int pot){
+        if(parametry->get(38) == 0){
+                lim_sw_stat = limitSwitchUpd();
+                int temp_pot_akt = pot;
+                if(temp_pot_akt != -99){
+                        pot_akt_val = temp_pot_akt;  
+                }             
+        }else{
+                lim_sw_stat = limitSwitchUpdService();
+                pot_akt_val = parametry->get(39);
+        } 
+
+        velocity_promil = map(pot_akt_val, parametry->get(0), parametry->get(1), 0, 1000);
+
+        velocity_promil = constrain(velocity_promil, 0, 1000);
+
+        total_pot = total_pot - readings_pot[readIndex_pot];
+        readings_pot[readIndex_pot] = velocity_promil;
+        total_pot = total_pot + readings_pot[readIndex_pot];
+        readIndex_pot = readIndex_pot + 1;
+        if (readIndex_pot >= 16) {
+                readIndex_pot = 0; 
+        }
+        velocity_promil = total_pot / 16; 
+        if(parametry->get(37) == 1){
+                velocity_promil = 1000;       
+        }
+}
+
 int Mcontrol::calcPotVal(){
-        int odczyt_akt = analogRead(pot_pin);
-        pot_sum = pot_sum + odczyt_akt;
-        pot_sum_licz++;
-        if(pot_sum_licz == 4){
-                odczyt_akt = pot_sum/pot_sum_licz;
-                pot_sum_licz = 0;  
-                pot_sum = 0;
-                int roznica_pot = odczyt_akt - parametry->get(25);
-                parametry->set(65, roznica_pot);
-                if(abs(roznica_pot) < 5){
-                        odczyt_akt = pot_akt_val;     
-                }
-                // float smoothedVal = 0.0;
-                // float smoothStrength = 5.0;
-                //smoothedVal =  smoothedVal + ((odczyt_akt - smoothedVal) + 0.0) / smoothStrength;
-                //odczyt_akt = round(smoothedVal);
+        int odczyt_akt = 1000;
+        if(millis() > 1000){
+        //   odczyt_akt = analogRead(pot_pin);     
+                multiplexer(0);
+                  if(ams.detectMagnet() == 1 ){
+                        odczyt_akt = convRawAngleToDegrees(ams.getRawAngle());
+                  }else{
+                        odczyt_akt = -1;  
+                  }
+        }
+        // pot_sum = pot_sum + odczyt_akt;
+        // pot_sum_licz++;
+        // if(pot_sum_licz == 2){
+        //         odczyt_akt = pot_sum/pot_sum_licz;
+        //         pot_sum_licz = 0;  
+        //         pot_sum = 0;
+        //         int roznica_pot = odczyt_akt - parametry->get(25);
+        //         parametry->set(65, roznica_pot);
+        //         if(abs(roznica_pot) < 5){
+        //                 odczyt_akt = pot_akt_val;     
+        //         }
+        //         // float smoothedVal = 0.0;
+        //         // float smoothStrength = 5.0;
+        //         //smoothedVal =  smoothedVal + ((odczyt_akt - smoothedVal) + 0.0) / smoothStrength;
+        //         //odczyt_akt = round(smoothedVal);
 
-                velocity_promil = map(odczyt_akt, parametry->get(0), parametry->get(1), 0, 1000);
+        //         velocity_promil = map(odczyt_akt, parametry->get(0), parametry->get(1), 0, 1000);
 
-                velocity_promil = constrain(velocity_promil, 0, 1000);
+        //         velocity_promil = constrain(velocity_promil, 0, 1000);
 
-                total_pot = total_pot - readings_pot[readIndex_pot];
-                readings_pot[readIndex_pot] = velocity_promil;
-                total_pot = total_pot + readings_pot[readIndex_pot];
-                readIndex_pot = readIndex_pot + 1;
-                if (readIndex_pot >= 16) {
-                        readIndex_pot = 0; 
-                }
-                velocity_promil = total_pot / 16; 
-                if(parametry->get(37) == 1){
-                        velocity_promil = 1000;       
-                }
+        //         total_pot = total_pot - readings_pot[readIndex_pot];
+        //         readings_pot[readIndex_pot] = velocity_promil;
+        //         total_pot = total_pot + readings_pot[readIndex_pot];
+        //         readIndex_pot = readIndex_pot + 1;
+        //         if (readIndex_pot >= 16) {
+        //                 readIndex_pot = 0; 
+        //         }
+        //         velocity_promil = total_pot / 16; 
+        //         if(parametry->get(37) == 1){
+        //                 velocity_promil = 1000;       
+        //         }
+        //         //return total_pot / 16; 
+        //         return odczyt_akt;
+        // }else{
+        //   return -99;      
+        // }
+
+
                 //return total_pot / 16; 
                 return odczyt_akt;
-        }else{
-          return -99;      
-        }
+
         /*
         pot_sum = pot_sum + odczyt_akt;
         pot_sum_licz++;
@@ -186,7 +241,6 @@ void Mcontrol::calcCurrVal(){
         temp_val = temp_val / 185.0;
         batCurr->add(temp_val); 
         parametry->set(44, batCurr->getVal());
-       
         long temp_val = (int)curr - (int)parametry->get(10);
         temp_val = temp_val * (int)parametry->get(11);
         temp_val = temp_val/(int)100;
@@ -209,26 +263,63 @@ int Mcontrol::limitSwitchUpdService(){
         if((pot_akt_val  == 0 && pot_akt_val  == 100) && !lim_sw_mem) return 2;       
 }
 void Mcontrol::calcPotLimit(){
-        int pot_akt = analogRead(pot_pin);
-        if(pot_akt < parametry->get(2) && abs(pot_akt-parametry->get(0)) > 30 && lim_sw_stat == 2){
-          parametry->set(0, pot_akt);
+        int pot_akt = 1000;
+        if(millis() > 1000){
+        //   pot_akt = analogRead(pot_pin);    
+           pot_akt = parametry->get(25);
         }
+        
+	if(lim_sw_stat == 2){	
+		// Sprawdzenie kolejności wartości potencjometru w górnym i dolnym położeniu. 
+		// Ustalenie mniejszej wartości jako dolna a większej jako górna
+		if(parametry->get(1) < parametry->get(0)){
+			int pot_dn = parametry->get(0);
+			parametry->set(0, parametry->get(1));
+			parametry->set(1, pot_dn);
+		}
+		// Obliczenie wartości podziałowej
+		int pot_dif = abs(parametry->get(1) - parametry->get(0)) / 2;
+			pot_dif = parametry->get(0) + pot_dif;
+		// Jeśli zapisana wartość podziałowa różni się od aktualnej o więcej niż 30 -> zapisanie nowej		
+		if((abs(parametry->get(2) - pot_dif)) > 30){
+			parametry->set(2, pot_dif);
+		}
+                // Zapis nowych wartości granicznych
+                if(pot_akt < (parametry->get(1) - 200)){
+                   if(abs(pot_akt-parametry->get(0)) > 50){ parametry->set(0, pot_akt); }     
+                }
+
+                if(pot_akt > (parametry->get(0) + 200)){
+                   if(abs(pot_akt-parametry->get(1)) > 50){ parametry->set(1, pot_akt); }     
+                }                
+	}       
+        // if(pot_akt < parametry->get(2) && abs(pot_akt-parametry->get(0)) > 30 && lim_sw_stat == 2){
+        //         if(pot_akt < parametry->get(1)){
+        //                 parametry->set(0, pot_akt); 
+        //         }
+        // }
         if(pot_akt < parametry->get(2)  && lim_sw_stat == 2){
           parametry->set(36, 1);
         }else{
           parametry->set(36, 0);      
         }   
-        if(pot_akt < parametry->get(2)  && lim_sw_stat == 1){
-          parametry->set(66, 1);
-        }            
-        if(pot_akt >= parametry->get(2) && abs(pot_akt-parametry->get(1)) > 30 && lim_sw_stat == 2){
-          parametry->set(1, pot_akt);
-        }   
+         
+        // if(pot_akt >= parametry->get(2) && abs(pot_akt-parametry->get(1)) > 30 && lim_sw_stat == 2){
+        //         if(pot_akt > parametry->get(0)){
+        //                parametry->set(1, pot_akt); 
+        //                parametry->set(2, pot_akt-200); 
+        //         }
+          
+        // }   
         if(pot_akt >= parametry->get(2)  && lim_sw_stat == 2){
           parametry->set(37, 1);
         }else{
           parametry->set(37, 0);      
-        }         
+        }      
+
+        if(pot_akt < parametry->get(2)  && lim_sw_stat == 1){
+          parametry->set(66, 1);
+        }              
 }
 void Mcontrol::calcEnableMotor(){
         if(perm_to_move && !stop_move){
@@ -288,7 +379,8 @@ void Mcontrol::setVelocity(){
         if(!enable_motor) velocity_tact = 0.00;
 }
 void Mcontrol::setPermToStartMove(){
-        if(pot_akt_val < parametry->get(2) && lim_sw_stat == 2){
+        //if(pot_akt_val < parametry->get(2) && lim_sw_stat == 2){
+        if(parametry->get(36)){
             perm_to_move = true;
             stop_move = true;
         }else{

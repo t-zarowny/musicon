@@ -16,8 +16,8 @@ Mparam::Mparam(){
         init(5, 10);            // 5 - minimalne obroty bębna (x10)
         init(6, 45);            // 6 - maksymale obroty bębna (x10)
         init(7, 1770);          // 7 - wewnętrzna wartość okreslająca prędkość silnika = 1 RPM
-        init(8, 8);             // 8 - ilość magnesów na obwodzie koła
-        init(9, 8000);          // 9 - maksymalny czas oczekiwania na sygnał z czujnika [ms]
+        init(8, 8);             // 8 - ilość magnesów na obwodzie koła (wycofano v3.4)
+        init(9, 8000);          // 9 - maksymalny czas oczekiwania na sygnał z czujnika [ms] (wycofano v3.4)
         init(10, 5072);         // 10 - Wartość wejścia analogowego przy prądzie 0 (x10)
         init(11, 276);          // 11 - Ilość mA na jeden punkt wartości wejścia analogowego (x10)
         init(12, 510);          // 12 - punkt ADC przycisku menu "-"
@@ -45,7 +45,7 @@ Mparam::Mparam(){
                                 // 37 - górny wyłącznik krańcowy naciśnięty
                                 // 38 - kontrola z programu serwisowego
                                 // 39 - aktualna wartosc potencjometru - program serwisowy
-                                // 40 - czas pomiędzy odczytami z czujnika
+                                // 40 - czas pomiędzy odczytami z czujnika (wycofano v3.4)
                                 // 41 - obliczona prędkość bębna (RPM x100)
                                 // 42 - odczyt z pomiaru napięcia baterii - smooth
                                 // 43 - odczyt z czujnika prądu
@@ -75,7 +75,7 @@ Mparam::Mparam(){
                                 // 66 - dolny wyłącznik krańcowy naciśnięty - zbocze narastające 
                                 // 67 - prędkość bębna wraz z kierunkiem
                                 // 68 - odczyt z enkodera magnetycznego - aktualny kąt obrotu silnika (0-360) x 10
-                                // 69 - aktualny kąt obrotu bębna (0-360)
+                                // 69 - aktualny kąt obrotu bębna (0-360) x10
 
         init(70, 150);          // 70 - Wartość prądu przy naładowaniu baterii 100% [mA]
         init(71, 127);          // 71 - Napięcie minimalne baterii [V x10]

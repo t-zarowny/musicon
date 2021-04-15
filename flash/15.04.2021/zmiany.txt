@@ -1,0 +1,3 @@
+- wprowadzenie enkodera magnetycznego dla silnika
+- wprowadzenie enkodera magnetycznego dla potencjometru
+- autokalibracja wartości granicznych oraz podziałowej dla potencjometru

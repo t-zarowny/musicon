@@ -1,9 +1,12 @@
 
 #ifndef _M_control_h_
 #define _M_control_h_
+#define MPLXADR 0x70
 #include "Arduino.h"
 #include "Mparam.h"
 #include "Smoothing.h"
+#include "AS5600.h"
+#include "Wire.h"
 
 class Mcontrol
 {
@@ -21,6 +24,7 @@ class Mcontrol
         long total_curr = 0;               
         int lim_sw_stat=0;
         bool lim_sw_mem = false;
+        int ang1 = 0;
         int calcPotVal();
         Mparam * parametry;
         int velocity_promil=0;
@@ -46,12 +50,15 @@ class Mcontrol
         Smoothing200 * vcsens;
         float smoothedVal = 0.0;
         float smoothStrength = 4.0;
+        AMS_5600 ams;
+        float convRawAngleToDegrees(word newAngle);
         
-  
+        
   public:
         Mcontrol (int limit_sw_pin, int potentiometer_pin, Mparam * param);
         void upd();
         int getPotVal();
+        int setPotVal(int pot);
         int getVelocityPromil();
         unsigned int getVelocityTmc();
         unsigned int getVelocityMaxTmc();
@@ -61,6 +68,8 @@ class Mcontrol
         void addVbat(int adc);
         void addCsens(int adc);
         void addMenuSW(int adc);
+        void multiplexer (uint8_t ch);
+        
 };
 
 #endif

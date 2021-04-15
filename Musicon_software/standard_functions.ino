@@ -108,6 +108,12 @@ void lcd_control(){
           if(Musicon.parametry->get(50) < 1000) Musicon.parametry->set(50, 1000);
           lcd.setCursor(0, 0);
           lcd.print(" M U S I C O N  ");
+          //lcd.print("0:");
+          //lcd.print(temp10);
+          //lcd.print(",1:");
+          //lcd.print(temp11);
+          //lcd.print(",2:");
+          //lcd.print(temp12);
           lcd.setCursor(0, 1);
           if(Musicon.ctrl->getVelocityTact() > 0){
             lcd.print("Tempo: ");
@@ -240,8 +246,10 @@ void timers(){
        t10=t0;
   }
 */
-   if(t0-t5 > 200){
+   if(t0-t5 > 50){
     bit50ms = !bit50ms;
+    Musicon.ctrl->multiplexer(1); 
+    calcMusiconDegree();
     t5 = t0;
    }
    if(t0-t7 > 1000){
