@@ -113,7 +113,9 @@ void Mcontrol::addMenuSW(int adc){
 void Mcontrol::multiplexer (uint8_t ch) {
   if (ch > 1) return;
   Wire.beginTransmission(MPLXADR);
-  Wire.write(1 << ch);
+  //Wire.write(1 << ch);
+  if (ch == 0) Wire.write(0b00000100);
+  if (ch == 1) Wire.write(0b00000101);
   Wire.endTransmission();
 }
 

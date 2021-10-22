@@ -1,0 +1,1 @@
+Wymiana multipleksera I2C z TCA9543A na PI4MSD5V9542A

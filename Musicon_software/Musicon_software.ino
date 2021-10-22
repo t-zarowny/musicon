@@ -114,6 +114,9 @@ int temp10, temp11, temp12 = 0;
 //  Wire.endTransmission();
 //}
 
+   byte error, address;
+  int nDevices, ad1, ad2, ad3;
+
 void setup() {
   pinMode(power_pin, OUTPUT);
   digitalWrite(power_pin, HIGH);
@@ -142,7 +145,7 @@ void setup() {
   SPI.setClockDivider(SPI_CLOCK_DIV64);//250khZ spi clk
   SPI.setDataMode(SPI_MODE3);
   SPI.begin();
-  Wire.setClock(10000);
+  //Wire.setClock(10000);
   Serial.begin(57600);
   
   configTMC5160();
@@ -312,6 +315,34 @@ void loop() {
     //calcMusiconDegree(); 
   }
   bit50ms_mem = bit50ms;
+  
+//----------------------------------------------
+//I2C scanning
+ 
+//  nDevices = 0;
+//  ad1=0;
+//  ad2=0;
+//  ad3=0;
+//  for(address = 1; address < 127; address++ )
+//  {
+//    Musicon.ctrl->multiplexer(0); 
+//    Wire.beginTransmission(address);
+//    error = Wire.endTransmission();
+// 
+//    if (error == 0)
+//    {
+//      nDevices++;
+//      if(nDevices == 1)
+//        ad1 = address;
+//      if(nDevices == 2)
+//        ad2 = address;
+//      if(nDevices == 3)
+//        ad3 = address; 
+//      
+//    }
+//  }
+  
+//----------------------------------------------
 }
 
 float convertRawAngleToDegrees(word newAngle)

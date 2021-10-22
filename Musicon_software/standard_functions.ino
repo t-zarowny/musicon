@@ -108,6 +108,14 @@ void lcd_control(){
           if(Musicon.parametry->get(50) < 1000) Musicon.parametry->set(50, 1000);
           lcd.setCursor(0, 0);
           lcd.print(" M U S I C O N  ");
+//          lcd.print("D");
+//          lcd.print(int(nDevices));
+//          lcd.print("A");
+//          lcd.print(int(ad1));
+//          lcd.print("B");
+//          lcd.print(int(ad2));  
+//          lcd.print("C");
+//          lcd.print(int(ad3)); 
           //lcd.print("0:");
           //lcd.print(temp10);
           //lcd.print(",1:");
