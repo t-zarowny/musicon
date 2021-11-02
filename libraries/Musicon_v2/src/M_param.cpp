@@ -1,6 +1,6 @@
 #include <M_param.h>
 
-void M_param::init(){
+M_param::M_param(){
   _init_group(GROUP_POWER);
 }
 void M_param::_init_group(int param_group){

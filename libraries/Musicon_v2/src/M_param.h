@@ -22,9 +22,9 @@
         void _changeParam(int* param_arr, int* param_arr_user, int eeprom_start, int param_nr, int change_values, bool save_to_eeprom);
 
     public:
-        void init();
+        M_param();
         int power(int param_nr);
-        void power(int param_nr, int change_values, bool save_to_eeprom);
+        void power(int param_nr, int change_values, bool save_to_eeprom = false);
         void restore(int param_group);
     };
 
