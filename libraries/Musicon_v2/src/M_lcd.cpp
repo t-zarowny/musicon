@@ -2,7 +2,7 @@
 
 M_lcd::M_lcd(M_param* param){
     _param = param;
-    //_param->power(PARAM_POWER_STATUS, 1);
+    //_param->parameter(PARAM_POWER_STATUS,1);
     _checkAdress(LCD_ADRESS_1);
     _checkAdress(LCD_ADRESS_2);
     if(_adress != 0){
@@ -70,8 +70,14 @@ void M_lcd::refresh(){
 void M_lcd::default_screen(){
     lcd->setCursor(0,0);
     lcd->print(" M U S I C O N  ");
+    //lcd->setCursor(0,1);
+    //lcd->print("Tempo: ");
     lcd->setCursor(0,1);
-    lcd->print("Tempo:          ");
-    lcd->setCursor(7,1);
-    lcd->print(_param->parameter(PARAM_POWER_STATUS));
+    lcd->print(_param->parameter(PARAM_CYCLE_MIN_TIME));
+    lcd->print("-");
+    lcd->print(_param->parameter(PARAM_CYCLE_MAX_TIME));
+    lcd->print(" ");
+    lcd->setCursor(11,1);
+    lcd->print(_param->parameter(PARAM_MENU_SW_LIVE_ADC));
+    lcd->print("  ");
 }

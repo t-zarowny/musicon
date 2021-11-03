@@ -2,6 +2,7 @@
 
 M_param::M_param(){
   _init();
+  restore();
 }
 void M_param::_init(){
   for(int i = 0; i < 200; i++){ 
@@ -54,6 +55,11 @@ void M_param::restore(){
   for(int i=0;i<200;i++){
     parameter(i, 0, true);
   }
-  parameter(PARAM_RESTORE, 1001, true);
-  parameter(PARAM_POWER_STATUS, 3);
+  parameter(PARAM_RESTORE,            1001, true);
+  parameter(PARAM_POWER_STATUS,       3,    true);
+  parameter(PARAM_MENU_SW_MINUS,      510,  true);
+  parameter(PARAM_MENU_SW_PLUS,       320,  true);
+  parameter(PARAM_MENU_SW_MINUSPLUS,  245,  true);
+  parameter(PARAM_MENU_SW_OK,         170,  true);
+  parameter(PARAM_MENU_SW_TOLERANCE,  30,   true);
 }
