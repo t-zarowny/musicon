@@ -12,5 +12,5 @@ void Musicon_v2::init(){
 }
  
 void Musicon_v2::main(){
-    _m_lcd->update();
+    _m_lcd->refresh();
 }

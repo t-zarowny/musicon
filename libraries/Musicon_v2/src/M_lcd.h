@@ -22,7 +22,7 @@ private:
 public:
     M_lcd(M_param* param);
     void init();
-    void update();
+    void refresh();
 };
 
 

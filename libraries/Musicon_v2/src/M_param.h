@@ -2,30 +2,23 @@
     #define _M_param_
 
     #include <EEPROM.h>
-    // Parameters - power module
-    #define GROUP_POWER 1001
-    #define PARAM_POWER_QUANTITY 10
-    #define PARAM_POWER_EPPROM_START 0
-    #define PARAM_POWER_RESTORE 0
-    #define PARAM_POWER_STATUS 1
+
+    #define PARAM_RESTORE 0         // 1001 - parametry zostały przywrócone, każda inna wartość - przywrócenie wartości domyślnych po następnym uruchomieniu
+    #define PARAM_POWER_STATUS 1    //0 - wyłączony, 1 - uśpiony i ładuje, 2 - wyłączanie ładowanie zakończone, 3 - włączony, 
+                                    // 4 - wyłączanie, 5 - wyłączanie ze względu na słabą baterię
 
     class M_param
     {
     private:
-        int _param_power[PARAM_POWER_QUANTITY]  =  { 0 };
-        int _param_power_user[PARAM_POWER_QUANTITY]  =  { 0 };
-
-        void _writeParamToEEPROM(int start_address, int param[], int param_nr);
-        void _readParamToEEPROM(int start_address, int param[], int param_nr);
-        void _init_group(int param_group);
-        void _paramCopy(int* src, int* dst, int len);
-        void _changeParam(int* param_arr, int* param_arr_user, int eeprom_start, int param_nr, int change_values, bool save_to_eeprom);
-
+        int _parameters[200] = {0};
+        void _writeParamToEEPROM(int param_nr, int val);
+        void _readParamToEEPROM(int param_nr);
+        void _init();
     public:
         M_param();
-        int power(int param_nr);
-        void power(int param_nr, int change_values, bool save_to_eeprom = false);
-        void restore(int param_group);
+        int parameter(int param_nr);
+        int parameter(int param_nr, int change_values, bool save_to_eeprom = false);
+        void restore();
     };
 
 #endif

@@ -53,7 +53,7 @@ void M_lcd::intro(){
     _intro_step--;
     if(_intro_step == 0) _status = 1;
 }
-void M_lcd::update(){
+void M_lcd::refresh(){
     switch (_status)
     {
     case 0:
@@ -73,5 +73,5 @@ void M_lcd::default_screen(){
     lcd->setCursor(0,1);
     lcd->print("Tempo:          ");
     lcd->setCursor(7,1);
-    lcd->print(_param->power(PARAM_POWER_STATUS));
+    lcd->print(_param->parameter(PARAM_POWER_STATUS));
 }
