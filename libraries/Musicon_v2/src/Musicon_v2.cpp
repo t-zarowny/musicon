@@ -45,7 +45,7 @@ void Musicon_v2::_menu_sw_control(){
         if(_time_start_menu_sw_ms == 0){
             _time_start_menu_sw_ms = millis();
         }else{
-            _m_param->parameter(PARAM_MENU_SW_TIME, ((millis() - _time_start_menu_sw_ms)/1000));
+            _menu_sw_press_time(_time_start_menu_sw_ms);
         }
     }
     if(_m_param->parameter(PARAM_MENU_SW_LIVE_ADC) > (_m_param->parameter(PARAM_MENU_SW_PLUS)-_m_param->parameter(PARAM_MENU_SW_TOLERANCE)) 
@@ -55,7 +55,7 @@ void Musicon_v2::_menu_sw_control(){
         if(_time_start_menu_sw_ms == 0){
             _time_start_menu_sw_ms = millis();
         }else{
-            _m_param->parameter(PARAM_MENU_SW_TIME, ((millis() - _time_start_menu_sw_ms)/1000));
+            _menu_sw_press_time(_time_start_menu_sw_ms);
         }
     }    
     if(_m_param->parameter(PARAM_MENU_SW_LIVE_ADC) > (_m_param->parameter(PARAM_MENU_SW_MINUSPLUS)-_m_param->parameter(PARAM_MENU_SW_TOLERANCE)) 
@@ -65,7 +65,7 @@ void Musicon_v2::_menu_sw_control(){
         if(_time_start_menu_sw_ms == 0){
             _time_start_menu_sw_ms = millis();
         }else{
-            _m_param->parameter(PARAM_MENU_SW_TIME, ((millis() - _time_start_menu_sw_ms)/1000));
+            _menu_sw_press_time(_time_start_menu_sw_ms);
         }
     }    
     if(_m_param->parameter(PARAM_MENU_SW_LIVE_ADC) > (_m_param->parameter(PARAM_MENU_SW_OK)-_m_param->parameter(PARAM_MENU_SW_TOLERANCE)) 
@@ -75,7 +75,7 @@ void Musicon_v2::_menu_sw_control(){
         if(_time_start_menu_sw_ms == 0){
             _time_start_menu_sw_ms = millis();
         }else{
-            _m_param->parameter(PARAM_MENU_SW_TIME, ((millis() - _time_start_menu_sw_ms)/1000));
+            _menu_sw_press_time(_time_start_menu_sw_ms);
         }
     }    
     if(_m_param->parameter(PARAM_MENU_SW_LIVE_ADC) > 1000){
@@ -87,4 +87,9 @@ void Musicon_v2::_menu_sw_control(){
     // Serial.println(_m_param->parameter(PARAM_MENU_SW_LIVE));
     // Serial.print("PARAM_MENU_SW_TIME: ");
     // Serial.println(_m_param->parameter(PARAM_MENU_SW_TIME));
+}
+void Musicon_v2::_menu_sw_press_time(unsigned long start_time){
+    unsigned long diff = (millis() - start_time);
+    if(diff < 32000)
+        _m_param->parameter(PARAM_MENU_SW_TIME, (int)diff);
 }

@@ -16,7 +16,10 @@ void M_lcd::_checkAdress(uint8_t adr){
     if(Wire.endTransmission() == 0) 
         _adress = adr;
 }
-void M_lcd::intro(){
+void M_lcd::_menu_control(){
+
+}
+void M_lcd::_intro(){
     switch (_intro_step)
     {
     case 15:
@@ -57,17 +60,57 @@ void M_lcd::refresh(){
     switch (_status)
     {
     case 0:
-        if((millis() % 100) == 0) intro();
+        if((millis() % 100) == 0) _intro();
         break;
     case 1:
-        if((millis() % 500) == 0) default_screen();
+        if((millis() % 500) == 0) _default_screen();
+        if((_param->parameter(PARAM_MENU_SW_LIVE) == 1 || 
+            _param->parameter(PARAM_MENU_SW_LIVE) == 2 ||
+            _param->parameter(PARAM_MENU_SW_LIVE) == 4) && 
+            !_button_pressed ){
+                lcd->clear();
+                _status = 2;
+                _button_pressed = true;
+        }
         break;
-    
+     case 2:
+        if((millis() % 100) == 0) _screen_menu();
+        if(_param->parameter(PARAM_MENU_SW_LIVE) == 3 && 
+            !_button_pressed ){
+                lcd->clear();
+                _status = 1;
+                _menu_display_nr = 0;
+                _button_pressed = true;
+        }
+        if(_param->parameter(PARAM_MENU_SW_LIVE) == 1 && 
+            !_button_pressed ){
+                int next_nr = _menu[_menu_display_nr].up;
+                if(next_nr >= 0)
+                    _menu_display_nr = next_nr;
+                _button_pressed = true;
+        }       
+        if(_param->parameter(PARAM_MENU_SW_LIVE) == 2 && 
+            !_button_pressed ){
+                int next_nr = _menu[_menu_display_nr].down;
+                if(next_nr >= 0)
+                    _menu_display_nr = next_nr;
+                _button_pressed = true;
+        }       
+        if(_param->parameter(PARAM_MENU_SW_LIVE) == 4 && 
+            !_button_pressed ){
+                int next_nr = _menu[_menu_display_nr].enter;
+                if(next_nr >= 0)
+                    _menu_display_nr = next_nr;
+                _button_pressed = true;
+        }       
+        break;   
     default:
         break;
     }
+    if(_param->parameter(PARAM_MENU_SW_LIVE) == 0)
+        _button_pressed = false;
 }
-void M_lcd::default_screen(){
+void M_lcd::_default_screen(){
     lcd->setCursor(0,0);
     lcd->print(" M U S I C O N  ");
     //lcd->setCursor(0,1);
@@ -80,4 +123,18 @@ void M_lcd::default_screen(){
     lcd->setCursor(11,1);
     lcd->print(_param->parameter(PARAM_MENU_SW_LIVE_ADC));
     lcd->print("  ");
+}
+void M_lcd::_screen_menu(){
+    int up_line = _menu_display_nr;
+    int down_line = _menu[_menu_display_nr].down;
+    lcd->setCursor(0,0);
+    lcd->print(">");
+    lcd->print(_menu[up_line].text);
+    lcd->setCursor(0,1);
+    if(down_line < 0){
+        lcd->print("                ");
+    }else{
+        lcd->print(" ");
+        lcd->print(_menu[down_line].text);
+    }
 }

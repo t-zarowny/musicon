@@ -21,6 +21,7 @@ class Musicon_v2
         M_param* _m_param;
         void _cycleTimeCheck();
         void _menu_sw_control();
+        void _menu_sw_press_time(unsigned long start_time);
         
     public:
         void init();
