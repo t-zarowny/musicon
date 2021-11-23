@@ -130,11 +130,35 @@ void M_lcd::_screen_menu(){
     lcd->setCursor(0,0);
     lcd->print(">");
     lcd->print(_menu[up_line].text);
+    if(_menu[up_line].parameter >= 0){
+        if(_menu_val_diff_up - _param->parameter(_menu[up_line].parameter) != 0){
+            lcd->setCursor(8,0);
+            lcd->print("     ");
+            lcd->setCursor(8,0);
+            float pu = (_param->parameter(_menu[up_line].parameter)*1.00) / _menu[up_line].factor;
+            lcd->print(pu,_menu[up_line].precision);
+            lcd->setCursor(13,0);
+            lcd->print(_menu[up_line].unit);
+        }
+        _menu_val_diff_up = _param->parameter(_menu[up_line].parameter);
+    }
     lcd->setCursor(0,1);
     if(down_line < 0){
         lcd->print("                ");
     }else{
         lcd->print(" ");
         lcd->print(_menu[down_line].text);
+        if(_menu[down_line].parameter >= 0){
+            if(_menu_val_diff_dn - _param->parameter(_menu[down_line].parameter) != 0){
+                lcd->setCursor(8,1);
+                lcd->print("     ");
+                lcd->setCursor(8,1);
+                float pd = _param->parameter(_menu[down_line].parameter)*1.00 / _menu[down_line].factor;
+                lcd->print(pd,_menu[down_line].precision);
+                lcd->setCursor(13,1);
+                lcd->print(_menu[down_line].unit);
+            }
+            _menu_val_diff_dn = _param->parameter(_menu[down_line].parameter);
+        }
     }
 }

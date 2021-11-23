@@ -5,8 +5,8 @@ void Musicon_v2::init(){
     _m_param = new M_param();
     Serial.begin(57600);
     Wire.begin();
-    _m_power->init();
     _m_lcd = new M_lcd(_m_param);
+    _m_power = new M_power(_m_param);
     // Serial.print("Adres: ");
     // Serial.println(M_lcd.getAdress());
     // Serial.println(0x27);
@@ -15,7 +15,8 @@ void Musicon_v2::init(){
 void Musicon_v2::main(){
     _cycleTimeCheck();
     _m_lcd->refresh();
-    if((millis() % 80) == 0) _menu_sw_control();
+    _m_power->refresh();
+    if((millis() % 40) == 0) _menu_sw_control();
 }
 void Musicon_v2::_cycleTimeCheck(){
         _count_cycle++;
