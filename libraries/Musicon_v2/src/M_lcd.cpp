@@ -85,6 +85,8 @@ void M_lcd::refresh(){
         if(_param->parameter(PARAM_MENU_SW_LIVE) == 1 && 
             !_button_pressed ){
                 int next_nr = _menu[_menu_display_nr].up;
+                _menu_val_diff_dn = -9999;
+                _menu_val_diff_up = -9999;                
                 if(next_nr >= 0)
                     _menu_display_nr = next_nr;
                 _button_pressed = true;
@@ -92,6 +94,8 @@ void M_lcd::refresh(){
         if(_param->parameter(PARAM_MENU_SW_LIVE) == 2 && 
             !_button_pressed ){
                 int next_nr = _menu[_menu_display_nr].down;
+                _menu_val_diff_dn = -9999;
+                _menu_val_diff_up = -9999;
                 if(next_nr >= 0)
                     _menu_display_nr = next_nr;
                 _button_pressed = true;
@@ -99,6 +103,8 @@ void M_lcd::refresh(){
         if(_param->parameter(PARAM_MENU_SW_LIVE) == 4 && 
             !_button_pressed ){
                 int next_nr = _menu[_menu_display_nr].enter;
+                _menu_val_diff_dn = -9999;
+                _menu_val_diff_up = -9999;
                 if(next_nr >= 0)
                     _menu_display_nr = next_nr;
                 _button_pressed = true;

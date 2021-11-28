@@ -2,7 +2,7 @@
 
 M_param::M_param(){
   _init();
-  restore();
+  //restore();
 }
 void M_param::_init(){
   for(int i = 0; i < 200; i++){ 
@@ -62,4 +62,7 @@ void M_param::restore(){
   parameter(PARAM_MENU_SW_MINUSPLUS,  245,  true);
   parameter(PARAM_MENU_SW_OK,         170,  true);
   parameter(PARAM_MENU_SW_TOLERANCE,  30,   true);
+  parameter(PARAM_INIT_OK_SETTER,     0,    true);
+  parameter(PARAM_SETTER_MIN_VALUE,     -1,    true);
+  parameter(PARAM_SETTER_MAX_VALUE,     -1,    true);
 }
