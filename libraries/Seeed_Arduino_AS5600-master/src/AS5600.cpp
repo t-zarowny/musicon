@@ -405,7 +405,7 @@ word AMS_5600::readTwoBytes(int in_adr_hi, int in_adr_lo)
   word high = Wire.read();
   
   high = high << 8;
-  retVal = high | low;
+  retVal = high | low;  
   
   return retVal;
 }
