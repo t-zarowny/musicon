@@ -323,6 +323,7 @@ void M_lcd::_screen_menu_switch(){
             if(_is_edit){
                 int p = _param->parameter(_menu[_menu_display_nr].parameter) + 1;
                 _param->parameter(_menu[_menu_display_nr].parameter, p, true);
+                _param->parameter(PARAM_INACTION_TIME, -60);
             }else{
                 _menu_val_diff_dn = -9999;
                 _menu_val_diff_up = -9999;                

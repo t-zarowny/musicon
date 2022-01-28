@@ -110,7 +110,7 @@ void M_power::_powerManager(){
       analogWrite(LED_SW_PIN, 255);
       _param->parameter(PARAM_INACTION_TIME,0);
     } 
-    if(_param->parameter(PARAM_POWER_STATUS) == 3 && (_param->parameter(PARAM_INACTION_TIME) > _param->parameter(PARAM_INACTION_TIME_OFF))){
+    if(_param->parameter(PARAM_POWER_STATUS) == 3 && (_param->parameter(PARAM_INACTION_TIME) > _param->parameter(PARAM_INACTION_TIME_OFF)) && _param->parameter(PARAM_INACTION_TIME_OFF) > 0){
       _param->parameter(PARAM_POWER_STATUS, 4);
       _lcd->status(3);
     }
