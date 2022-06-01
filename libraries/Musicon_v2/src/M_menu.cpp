@@ -10,6 +10,7 @@
 
     MenuEntry _menu[] = 
     {
+        //{43,     1,     0,  0},  // parametr testowy
         //Bateria
         {12,     1,     0,  0},  // prąd akumulatora [mA]
         {13,    10,     1,  0},  // napięcie akumulatora *10 [V]
@@ -21,8 +22,10 @@
         //Silnik
         {15,    10,     1,  0},  // Aktualny kąt obrotu silnika
         {27,     1,     0,  1},  // wartość okreslająca prędkość silnika = 1 RPM
-        {28,    10,     1,  0},  // minimalne obroty bębna (x10)
-        {29,    10,     1,  0},  // maksymale obroty bębna (x10)
+        {28,    10,     1,  1},  // minimalne obroty bębna (x10)
+        {29,    10,     1,  1},  // maksymale obroty bębna (x10)
+        {45,     1,     0,  0},  // Takty minimalne
+        {44,     1,     0,  0},  // Takty maksymalne
         {30,    10,     1,  0},  // przełożenie bęben-silnik 1:x (x10)
         {31,    10,     1,  0},  // prędkość silnika (RPM x 10)
       
@@ -31,7 +34,6 @@
         {18,    10,     1,  0},  // Minimalny kąt zadajnika
         {19,    10,     1,  0},  // Maksymalny kąt zadajnika
         {21,     1,     0,  0},  // Takty zadane
-        {27,     1,     0,  1},  // wartość okreslająca prędkość silnika = 1 RPM
     
         //ogólne        
         {0,      1,     1,  1},  // 1001 - parametry zostały przywrócone, każda inna wartość - przywrócenie wartości domyślnych po następnym uruchomieniu

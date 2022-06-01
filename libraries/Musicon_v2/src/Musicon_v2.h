@@ -28,7 +28,7 @@ class Musicon_v2
         float _angle_last_read_motor_hall = 9999.0;
         float _velocity_mem = 0.0;
         int _velocity_mem_count = 0;
-        float _motor_velocity_smooth[3] = { 0 };
+        float _motor_velocity_smooth[3] = { 100 };
         int _motor_velocity_smooth_count = 0;
         int _count_cycle = 0;
         bool _lim_sw_mem;

@@ -50,6 +50,9 @@
     #define PARAM_MPLX_TYPE             40  // 43-TCA9543A, 42-PI4MSD5V9542A
     #define PARAM_INACTION_TIME         41  // czas bezczynności
     #define PARAM_INACTION_TIME_OFF     42  // czas bezczynności po którym następuje wyłączenie
+    #define PARAM_TEST                  43  // parametr do testów
+    #define PARAM_TACT_MAX_VALUE        44  // Takty maksymalne
+    #define PARAM_TACT_MIN_VALUE        45  // Takty minimalne
 
     class M_data
     {

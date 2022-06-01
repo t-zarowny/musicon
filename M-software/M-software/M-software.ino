@@ -21,6 +21,7 @@ void setup()
 {
   pinMode(7, OUTPUT);
   digitalWrite(7, HIGH);
+  delay(200);
     _checkAdress(LCD_ADRESS_1);
     _checkAdress(LCD_ADRESS_2);
     if(_adress != 0){

@@ -13,6 +13,9 @@ private:
     M_data* _param;
     unsigned long _mem_time_brake_start = 0;
     unsigned long _mem_time_brake_vel_start = 0;
+    unsigned long _mem_time_angle_control = 0;
+    int _last_angle = 0;
+    bool _blocked = false;
     bool _brake = false;
     int _adress_spi_mem = 0;
     bool _enable_motor = false;

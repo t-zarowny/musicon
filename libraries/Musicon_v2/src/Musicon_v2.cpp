@@ -50,7 +50,7 @@ void Musicon_v2::main(){
     }
     
     if(_m_param->parameter(PARAM_INIT_OK_SETTER)  &&
-       _m_param->parameter(PARAM_SETTER_TACT) == 32 && 
+       _m_param->parameter(PARAM_SETTER_TACT) == _m_param->parameter(PARAM_TACT_MIN_VALUE) && 
        _m_param->parameter(PARAM_SETTER_LIM_SW_STAT) == 2){
            _m_motor->init_ok = true;
     }
@@ -387,8 +387,8 @@ void Musicon_v2::_tactCalculate(){
     }
     fromLow += 20;
     fromHigh -= 20;
-    tact = map(act_deg_position, fromLow, fromHigh, 32, 144);
-    tact = constrain(tact, 32, 144);
+    tact = map(act_deg_position, fromLow, fromHigh, _m_param->parameter(PARAM_TACT_MIN_VALUE), _m_param->parameter(PARAM_TACT_MAX_VALUE));
+    tact = constrain(tact, _m_param->parameter(PARAM_TACT_MIN_VALUE), _m_param->parameter(PARAM_TACT_MAX_VALUE));
     _m_param->parameter(PARAM_SETTER_TACT, tact);
 }
 int Musicon_v2::_limitSwitchUpd(){

@@ -103,7 +103,7 @@ void M_power::_powerManager(){
       _lcd->status(3);
     }
     if((_param->parameter(PARAM_POWER_STATUS) == 0 || _param->parameter(PARAM_POWER_STATUS) == 1) && 
-        (this->_sw_switch || _param->parameter(PARAM_MOTOR_VELOCITY) > 30)){
+        (this->_sw_switch || abs(_param->parameter(PARAM_MOTOR_VELOCITY)) > 30)){
       _param->parameter(PARAM_POWER_STATUS, 3);
       digitalWrite(ENABLE_PIN, HIGH);
       _lcd->status(0);

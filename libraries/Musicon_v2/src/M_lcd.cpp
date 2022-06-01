@@ -250,7 +250,7 @@ void M_lcd::_default_screen(){
     }
     if(_param->parameter(PARAM_MOTOR_PERM_TO_MOVE) == 1){
         //MOVE
-        lcd->print("TACT: ");
+        lcd->print("TEMPO: ");
         lcd->print((int)_param->parameter(PARAM_SETTER_TACT));
         lcd->print("   ");
     }

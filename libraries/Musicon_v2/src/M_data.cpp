@@ -11,6 +11,8 @@ void M_data::_init(){
   }
   if(_parameters[PARAM_RESTORE] != 1001) 
     restore();
+  _parameters[PARAM_TACT_MAX_VALUE] = (_parameters[PARAM_MOTOR_TMC_MAX_VEL]*32)/10;
+  _parameters[PARAM_TACT_MIN_VALUE] = (_parameters[PARAM_MOTOR_TMC_MIN_VEL]*32)/10;
 }
 
 // Odczytuje parametr.
@@ -27,6 +29,10 @@ int M_data::parameter(int param_nr, int change_values, bool save_to_eeprom = fal
   _parameters[param_nr] = change_values;
   if(save_to_eeprom){
     _writeParamToEEPROM(param_nr, change_values);
+  }
+  if(param_nr == PARAM_MOTOR_TMC_MAX_VEL || param_nr == PARAM_MOTOR_TMC_MIN_VEL){
+    _parameters[PARAM_TACT_MAX_VALUE] = (_parameters[PARAM_MOTOR_TMC_MAX_VEL]*32)/10;
+    _parameters[PARAM_TACT_MIN_VALUE] = (_parameters[PARAM_MOTOR_TMC_MIN_VEL]*32)/10; 
   }
   return _parameters[param_nr];
 }

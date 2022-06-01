@@ -112,8 +112,8 @@ void M_motor::refresh(){
     if(_brake){
       _param->parameter(PARAM_MOTOR_PERM_TO_MOVE, 2);
     }else{
-      if((_param->parameter(PARAM_SETTER_TACT) == 32 && _param->parameter(PARAM_SETTER_LIM_SW_STAT) == 2) 
-          || !init_ok || _param->parameter(PARAM_POWER_STATUS) != 3){
+      if((_param->parameter(PARAM_SETTER_TACT) == _param->parameter(PARAM_TACT_MIN_VALUE) && _param->parameter(PARAM_SETTER_LIM_SW_STAT) == 2) 
+          || !init_ok || _param->parameter(PARAM_POWER_STATUS) != 3 || _blocked){
           _param->parameter(PARAM_MOTOR_PERM_TO_MOVE, 0);
       }else{
           _param->parameter(PARAM_MOTOR_PERM_TO_MOVE, 1);
@@ -136,7 +136,7 @@ void M_motor::_velocitySet(){
 
     if(_param->parameter(PARAM_MOTOR_PERM_TO_MOVE) == 1){
       _enable_motor = true;
-      motorSpeed = map(_param->parameter(PARAM_SETTER_TACT),32,144,min_tmc,max_tmc);
+      motorSpeed = map(_param->parameter(PARAM_SETTER_TACT),_param->parameter(PARAM_TACT_MIN_VALUE),_param->parameter(PARAM_TACT_MAX_VALUE),min_tmc,max_tmc);
     }else{
       _enable_motor = false;
       motorSpeed = 0;
@@ -157,6 +157,10 @@ void M_motor::_velocitySet(){
 
 void M_motor::_velocityControl(){
   unsigned long actual_time = millis();
+  if(_param->parameter(PARAM_SETTER_TACT) == _param->parameter(PARAM_TACT_MIN_VALUE) 
+      && _param->parameter(PARAM_SETTER_LIM_SW_STAT) == 2){
+        _blocked = false;
+      }
 
   // Jeśli prędkość aktualna jest mniejsza od prędkości hamowania, 
   // to przepisuj aktualny czas do _mem_time_brake_vel_start
@@ -165,18 +169,32 @@ void M_motor::_velocityControl(){
   }
   // Sprawdź, czy ostatni zapisany czas nieprzekraczania prędkości nie jest większy niż zadany w parametrach
   // Jeśli tak, to rozpocznij liczyć czas hamowania i włącz hamowanie
-  if((actual_time - _mem_time_brake_vel_start) > _param->parameter(PARAM_MOTOR_BRAKE_TIME)){
+  if(actual_time < 1000 || (actual_time - _mem_time_brake_vel_start) > _param->parameter(PARAM_MOTOR_BRAKE_TIME)){
     if(_mem_time_brake_start == 0) {
       _mem_time_brake_start = actual_time;
       _brake = true;
     }
   }
   // Jeśli załączone jest hamowanie, po upływie 2 sekund wyłącz
-  if(_brake && ((actual_time - _mem_time_brake_start) > 2000)){
+  if(_brake && ((actual_time - _mem_time_brake_start) > 200)){
       _mem_time_brake_start = 0;
       _brake = false;
+      //_blocked = true;
   }
-
-
+  if((_mem_time_angle_control + 1000) < millis()){
+    //if(_param->parameter(PARAM_MOTOR_PERM_TO_MOVE) == 1)
+    int diff_angle = _last_angle - _param->parameter(PARAM_HALL_MOTOR_DEG);
+    if((_param->parameter(PARAM_MOTOR_PERM_TO_MOVE) == 1) && 
+        abs(diff_angle) < 70){
+          _blocked = true;
+          _param->parameter(PARAM_TEST, abs(diff_angle));
+        }
+    _mem_time_angle_control = millis();
+    _last_angle = this->_param->parameter(PARAM_HALL_MOTOR_DEG);
+  }
+  if(_param->parameter(PARAM_MOTOR_PERM_TO_MOVE) != 1){
+    _mem_time_angle_control = millis();
+    _last_angle = 10000;
+  }
 
 }
