@@ -41,6 +41,9 @@
         {40,     1,     0,  0},  // 43-TCA9543A, 42-PI4MSD5V9542A
         {41,     1,     0,  0},  // czas bezczynności
         {42,     1,     0,  1},  // czas bezczynności po którym następuje wyłączenie
+        {46,     1,     0,  1},  // Gdy parametr jest różny od 0-przy podłączonym zasilaczu usypianie jest wyłączone
+        {47,     1,     0,  0},  // Czas pracy bez zmiany prędkości
+        {48,     1,     0,  1},  // Czas pracy bez zmiany prędkości po którym bęben ma się zatrzymać
     };
 
 #endif

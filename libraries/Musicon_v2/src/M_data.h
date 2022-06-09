@@ -53,7 +53,9 @@
     #define PARAM_TEST                  43  // parametr do testów
     #define PARAM_TACT_MAX_VALUE        44  // Takty maksymalne
     #define PARAM_TACT_MIN_VALUE        45  // Takty minimalne
-
+    #define PARAM_NOT_TURN_OFF_WHILE_AC 46  // Gdy parametr jest różny od 0-przy podłączonym zasilaczu usypianie jest wyłączone
+    #define PARAM_WORKING_TIME          47  // Czas pracy bez zmiany prędkości
+    #define PARAM_WORKING_TIME_STOP     48  // Czas pracy bez zmiany prędkości po którym bęben ma się zatrzymać
     class M_data
     {
     private:

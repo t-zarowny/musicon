@@ -1,0 +1,35 @@
+//Bateria
+12 - aktualny prąd ładowania/rozładowywania akumulatora [mA]
+13 - napięcie akumulatora [V]
+14 - napięcie akumulatora - obliczone do poziomu naładowania  [V]
+35 - Status baterii: (-1)-brak baterii, 0-100-Procent naładowania
+38 - PWM ładowania
+39 - 0-brak ładowania, 1-ładowanie
+
+//Silnik
+15 - Aktualny kąt obrotu silnika [stopień]
+27 (E) - wartość TMC okreslająca prędkość silnika dla 1 RPM
+28 (E) - minimalne obroty bębna [RPM]
+29 (E) - maksymale obroty bębna [RPM]
+45 - Takty minimalne
+44 - Takty maksymalne
+30 - przełożenie bęben-silnik 1:x
+31 - aktualna prędkość silnika [RPM]
+
+//Zadajnik
+16 - Aktualny kąt obrotu zadajnika prędkości
+18 - Minimalny obliczony kąt zadajnika
+19 - Maksymalny obliczony kąt zadajnika
+21 - Aktualne takty zadane
+
+//Ogólne        
+0 (E) - 1001 - parametry zostały przywrócone, każda inna wartość - przywrócenie wartości domyślnych po następnym uruchomieniu
+11 - czas przez jaki przycisk jest wciśnięty [s]
+40 - 43-TCA9543A, 42-PI4MSD5V9542A
+41 - czas bezczynności
+42 (E) - czas bezczynności po którym następuje wyłączenie
+46 (E) - Gdy parametr jest różny od 0-przy podłączonym zasilaczu usypianie jest wyłączone
+47 - Czas pracy bez zmiany prędkości
+48 (E) - Czas pracy bez zmiany prędkości po którym bęben ma się zatrzymać
+
+*(E) - wyświetlane przy parametrze oznacza możliwość edycji/zmiany wartości

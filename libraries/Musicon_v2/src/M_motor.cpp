@@ -196,5 +196,8 @@ void M_motor::_velocityControl(){
     _mem_time_angle_control = millis();
     _last_angle = 10000;
   }
+  if(_param->parameter(PARAM_WORKING_TIME_STOP) > 0 && _param->parameter(PARAM_WORKING_TIME) > _param->parameter(PARAM_WORKING_TIME_STOP)){
+    _blocked = true;
+  }
 
 }

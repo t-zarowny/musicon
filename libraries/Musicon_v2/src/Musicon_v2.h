@@ -31,6 +31,7 @@ class Musicon_v2
         float _motor_velocity_smooth[3] = { 100 };
         int _motor_velocity_smooth_count = 0;
         int _count_cycle = 0;
+        int _setter_tact_mem = 0;
         bool _lim_sw_mem;
         bool _setter_hall_init_ok = false;
         M_power* _m_power;

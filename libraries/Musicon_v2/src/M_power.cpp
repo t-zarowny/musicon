@@ -110,9 +110,16 @@ void M_power::_powerManager(){
       analogWrite(LED_SW_PIN, 255);
       _param->parameter(PARAM_INACTION_TIME,0);
     } 
-    if(_param->parameter(PARAM_POWER_STATUS) == 3 && (_param->parameter(PARAM_INACTION_TIME) > _param->parameter(PARAM_INACTION_TIME_OFF)) && _param->parameter(PARAM_INACTION_TIME_OFF) > 0){
-      _param->parameter(PARAM_POWER_STATUS, 4);
-      _lcd->status(3);
+    if(_param->parameter(PARAM_POWER_SUPPLY_OK) == 1){ //Jeśli zasilacz podłączony
+      if(_param->parameter(PARAM_POWER_STATUS) == 3 && (_param->parameter(PARAM_INACTION_TIME) > _param->parameter(PARAM_INACTION_TIME_OFF)) && _param->parameter(PARAM_INACTION_TIME_OFF) > 0 && _param->parameter(PARAM_NOT_TURN_OFF_WHILE_AC) == 0){
+        _param->parameter(PARAM_POWER_STATUS, 4);
+        _lcd->status(3);
+      }
+    }else{
+      if(_param->parameter(PARAM_POWER_STATUS) == 3 && (_param->parameter(PARAM_INACTION_TIME) > _param->parameter(PARAM_INACTION_TIME_OFF)) && _param->parameter(PARAM_INACTION_TIME_OFF) > 0){
+        _param->parameter(PARAM_POWER_STATUS, 4);
+        _lcd->status(3);
+      }
     }
     if(_param->parameter(PARAM_POWER_STATUS) == 4 && _lcd->status() == 100){
         _param->parameter(PARAM_POWER_STATUS, 0);

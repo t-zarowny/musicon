@@ -64,8 +64,24 @@ void Musicon_v2::main(){
         _m_lcd->bit1000ms = !_m_lcd->bit1000ms;
         _time_mem_bit1000ms = millis();
         int time_inactive = _m_param->parameter(PARAM_INACTION_TIME);
-        time_inactive++;
-        _m_param->parameter(PARAM_INACTION_TIME,time_inactive);
+        if(time_inactive < 30000){
+            time_inactive++;
+            _m_param->parameter(PARAM_INACTION_TIME,time_inactive);
+        }
+        int working_time = _m_param->parameter(PARAM_WORKING_TIME);
+        if(working_time < 30000){
+            if(_m_param->parameter(PARAM_MOTOR_PERM_TO_MOVE) == 1){
+                working_time++;
+                _m_param->parameter(PARAM_WORKING_TIME,working_time);
+            }else{
+                _m_param->parameter(PARAM_WORKING_TIME,0);
+            }
+        }
+        int diff_setter_tact = abs(_setter_tact_mem - _m_param->parameter(PARAM_SETTER_TACT));
+        if(diff_setter_tact > 2){
+            _m_param->parameter(PARAM_WORKING_TIME,0);
+            _setter_tact_mem = _m_param->parameter(PARAM_SETTER_TACT);
+        }
     }
     if(abs(_m_param->parameter(PARAM_MOTOR_VELOCITY)) > 10){
         _m_param->parameter(PARAM_INACTION_TIME,0);

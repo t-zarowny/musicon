@@ -62,23 +62,24 @@ void M_data::restore(){
   for(int i=0;i<200;i++){
     this->parameter(i, 0, true);
   }
-  this->parameter(PARAM_RESTORE,            1001, true);
-  this->parameter(PARAM_POWER_STATUS,       3,    true);
-  this->parameter(PARAM_MENU_SW_MINUS,      510,  true);
-  this->parameter(PARAM_MENU_SW_PLUS,       320,  true);
-  this->parameter(PARAM_MENU_SW_MINUSPLUS,  245,  true);
-  this->parameter(PARAM_MENU_SW_OK,         170,  true);
-  this->parameter(PARAM_MENU_SW_TOLERANCE,  30,   true);
-  this->parameter(PARAM_INIT_OK_SETTER,     0,    true);
-  this->parameter(PARAM_SETTER_MIN_VALUE,   -1,   true);
-  this->parameter(PARAM_SETTER_MAX_VALUE,   -1,   true);
-  this->parameter(PARAM_MOTOR_TMC_VELOCITY, 1770, true);
-  this->parameter(PARAM_MOTOR_TMC_MIN_VEL,  10,   true);
-  this->parameter(PARAM_MOTOR_TMC_MAX_VEL,  45,   true);
-  this->parameter(PARAM_MOTOR_RATIO,        60,   true);
-  this->parameter(PARAM_MOTOR_BRAKE_VEL,    60,   true);
-  this->parameter(PARAM_MOTOR_BRAKE_TIME,   100,  true);
-  this->parameter(PARAM_POWER_BAT_MIN,      127,  true);
-  this->parameter(PARAM_POWER_BAT_A_MAX,    600,  true);
-  this->parameter(PARAM_INACTION_TIME_OFF,  600,  true);
+  this->parameter(PARAM_RESTORE,                1001, true);
+  this->parameter(PARAM_POWER_STATUS,           3,    true);
+  this->parameter(PARAM_MENU_SW_MINUS,          510,  true);
+  this->parameter(PARAM_MENU_SW_PLUS,           320,  true);
+  this->parameter(PARAM_MENU_SW_MINUSPLUS,      245,  true);
+  this->parameter(PARAM_MENU_SW_OK,             170,  true);
+  this->parameter(PARAM_MENU_SW_TOLERANCE,      30,   true);
+  this->parameter(PARAM_INIT_OK_SETTER,         0,    true);
+  this->parameter(PARAM_SETTER_MIN_VALUE,       -1,   true);
+  this->parameter(PARAM_SETTER_MAX_VALUE,       -1,   true);
+  this->parameter(PARAM_MOTOR_TMC_VELOCITY,     1770, true);
+  this->parameter(PARAM_MOTOR_TMC_MIN_VEL,      10,   true);
+  this->parameter(PARAM_MOTOR_TMC_MAX_VEL,      45,   true);
+  this->parameter(PARAM_MOTOR_RATIO,            60,   true);
+  this->parameter(PARAM_MOTOR_BRAKE_VEL,        60,   true);
+  this->parameter(PARAM_MOTOR_BRAKE_TIME,       100,  true);
+  this->parameter(PARAM_POWER_BAT_MIN,          127,  true);
+  this->parameter(PARAM_POWER_BAT_A_MAX,        600,  true);
+  this->parameter(PARAM_INACTION_TIME_OFF,      600,  true);
+  this->parameter(PARAM_NOT_TURN_OFF_WHILE_AC,  0,    true);
 }
