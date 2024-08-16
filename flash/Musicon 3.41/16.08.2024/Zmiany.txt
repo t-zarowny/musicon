@@ -1,0 +1,1 @@
+- Wyłączenie funkcji automatycznej zmiany krańcowych kątów zadajnika na -0.1
